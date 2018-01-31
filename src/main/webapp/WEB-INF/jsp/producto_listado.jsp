@@ -1,36 +1,39 @@
-<%@ include file = "/common/taglibs.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ include file="/common/taglibs.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta charset="utf-8">
 <title>Listado de Productos</title>
 <base href="${pageContext.request.contextPath}/">
 </head>
+
 <body>
 
 	<div align="center">
-			<table>
+		<table>
+			<tr>
+				<td>Id</td>
+				<td>Code</td>
+				<td>Producto</td>
+				<td>Descripción</td>
+				<td>Precio</td>
+				<td>Categoría</td>
+			</tr>
+
+			<c:forEach items="${lstProduct}" var="prod">
 				<tr>
-					<td>Id</td>
-					<td>Producto</td>
-					<td>Code</td>
-					<td>Precio</td>
-					<td>Descripción</td>				
+					<td>${prod.id_product}</td>
+					<td>${prod.code}</td>
+					<td>${prod.name}</td>
+					<td>${prod.description}</td>
+					<td>${prod.price}</td>				
+					<td>${prod.category.name}</td>
 				</tr>
-			
-				<c:forEach  items="${lstProduct}" var="prod">
-					<tr>
-						<td>${prod.id_product}</td>
-						<td>${prod.name}</td>
-						<td>${prod.code}</td>
-						<td>${prod.price}</td>
-						<td>${prod.description}</td>				
-					</tr>
-				</c:forEach>
-			
-			</table>
-			
+			</c:forEach>
+
+		</table>
+
 	</div>
-	
+
 </body>
 </html>

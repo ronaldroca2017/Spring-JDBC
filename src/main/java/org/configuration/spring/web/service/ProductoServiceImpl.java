@@ -22,8 +22,14 @@ public class ProductoServiceImpl implements ProductoService {
 
 	@Override
 	public List<Product> findAllProducts() {
-		logger.info("Service - findAllProducts ");	
 		return productoDao.findAllProducts();
+		
+	}
+
+
+	@Override
+	public void saveProduct(Product p) {
+		productoDao.saveProduct(p);
 		
 	}
 

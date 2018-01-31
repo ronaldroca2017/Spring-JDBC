@@ -7,5 +7,6 @@ import org.configuration.spring.web.model.Product;
 public interface ProductoService {
 	
 	List<Product> findAllProducts();
+	void  saveProduct(Product p);
 
 }

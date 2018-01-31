@@ -1,7 +1,7 @@
 package org.configuration.spring.web.dao;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 public class ProductoDaoImplJdbc  implements ProductoDao {
 	
 	final static Logger logger = Logger.getLogger(ProductoDaoImplJdbc.class);
+	
 
 	@Autowired
 	private DataSource dataSource;	
@@ -30,16 +31,16 @@ public class ProductoDaoImplJdbc  implements ProductoDao {
 		
 		Product product = null;
 		Connection conn = null;
-		CallableStatement cst = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Product> lstProd = null;
 		
 		try {
 			logger.info("Busca todos los productos de la bd usando JDBC");	
 			conn = dataSource.getConnection();
-			cst = conn.prepareCall(sql);
-			cst.execute();
-			rs = cst.getResultSet();	
+			ps = conn.prepareCall(sql);
+			ps.execute();
+			rs = ps.getResultSet();	
 			
 			lstProd = new ArrayList<Product>();
 			
@@ -50,27 +51,67 @@ public class ProductoDaoImplJdbc  implements ProductoDao {
 				  product.setName(rs.getString("name"));
 				  product.setDescription(rs.getString("description"));
 				  product.setPrice(rs.getBigDecimal("price"));
+				  product.setCategory(new Category(rs.getString("nameCat")));
 
 				  lstProd.add(product);			      
 	            }
 			  
 			rs.close();
-			cst.close();
+			ps.close();
 			return lstProd;
 			
 		} catch (SQLException e) {
 			logger.error("Error al recuperar los productos de la bd " + e.getMessage());
 			throw new RuntimeException(e);
 		} finally {	
-			cerrarConexion(cst,rs,conn);
+			cerrarConexion(ps,rs,conn);
 		}	
 		
 	}
 	
-	private void cerrarConexion(CallableStatement cst, ResultSet rs,Connection conn ) {
-		try{ if(cst!=null)cst.close(); } catch(Exception e){e.getMessage();}
+	private void cerrarConexion(PreparedStatement ps, ResultSet rs,Connection conn ) {
+		try{ if(ps!=null)ps.close(); } catch(Exception e){e.getMessage();}
 		try{ if(rs!=null)rs.close(); } catch(Exception e){e.getMessage();}
 		try{ if(conn!=null)conn.close(); } catch(Exception e){e.getMessage();}
+		
+	}
+
+	@Override
+	public void saveProduct(Product p) {
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		String INSERT_SQL = "INSERT INTO PRODUCT(name,"
+	            + "code,price,description,id_Category) "
+	            + "VALUES(?,?,?,?,?)";
+	
+		 try {
+			 logger.info("Registrando el producto en la bd usando JDBC");	
+				conn = dataSource.getConnection();
+	            ps = conn.prepareStatement(INSERT_SQL);
+	            ps.setString(1, p.getName());
+	            ps.setString(2, p.getCode());
+	            ps.setBigDecimal(3, p.getPrice());
+	            ps.setString(4, p.getDescription());
+	            ps.setInt(5, p.getCategory().getId_Category());
+	            
+	            ps.executeUpdate();  
+	            
+	            ps.close();
+	            conn.close();
+	            
+	        } catch (Exception e) {
+	        	logger.error("Error al Registrar el producto en la bd " + e.getMessage());
+				throw new RuntimeException(e);
+	        }finally{
+	        	try {
+	        		ps.close();
+					conn.close();		
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        }
 		
 	}
 

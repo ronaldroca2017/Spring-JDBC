@@ -23,6 +23,13 @@ public class Category {
 	private String name;
 	
 
+	public Category() {
+	}
+	
+	public Category(String name) {
+		this.name = name;
+	}
+	
 	public Integer getId_Category() {
 		return id_Category;
 	}

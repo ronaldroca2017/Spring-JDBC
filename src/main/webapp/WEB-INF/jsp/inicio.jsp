@@ -14,6 +14,9 @@
 		<li>
 			<a href="listaProducto.htm">Listar Productos</a>
 		</li>
+			<li>
+			<a href="loadRegistrarProducto.htm">Registrar Productos</a>
+		</li>
 		
 	</ul>
 		<br>
