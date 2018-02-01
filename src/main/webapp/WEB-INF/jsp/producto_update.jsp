@@ -8,9 +8,9 @@
 
 
 <body>
-
+<jsp:include page="inicio.jsp"/>
 	<div align="center">
-		<form:form action="updateProducto.htm" commandName="product">
+		<form:form action="updateProducto.htm"   commandName ="product">
 
 			<form:hidden path="id_product" />
 

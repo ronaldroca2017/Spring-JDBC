@@ -40,4 +40,11 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 
+	@Override
+	public void updateProduct(Product p) {
+		productoDao.updateProduct(p);
+		
+	}
+
+
 }

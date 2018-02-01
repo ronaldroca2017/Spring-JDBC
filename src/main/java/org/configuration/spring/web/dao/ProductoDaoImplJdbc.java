@@ -157,5 +157,47 @@ public class ProductoDaoImplJdbc  implements ProductoDao {
 	}
 
 
+	@Override
+	public void updateProduct(Product p) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+
+		
+		String UPDATE_SQL = "UPDATE PRODUCT SET "
+                 + "code = ?,"
+                 + "name=?,"
+                 + "description=?,"
+                 + "price=?,"
+                 + "id_Category = ? "
+                 + "WHERE id_product = ?";
+	
+		 try {
+			 logger.info("Actualizando el producto en la bd usando JDBC");	
+				conn = dataSource.getConnection();
+	            ps = conn.prepareStatement(UPDATE_SQL);
+	            ps.setString(1, p.getCode());
+	            ps.setString(2, p.getName());
+	            ps.setString(3, p.getDescription());
+	            ps.setBigDecimal(4, p.getPrice());
+	            ps.setInt(5, p.getCategory().getId_Category());
+	            ps.setInt(6, p.getId_product());
+	           
+	            ps.executeUpdate();  
+	                        
+	        } catch (Exception e) {
+	        	logger.error("Error al Actualizar el producto en la bd " + e.getMessage());
+				throw new RuntimeException(e);
+	        }finally{
+	        	try {
+	        		ps.close();
+					conn.close();		
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        }		
+		
+	}
+
+
 
 }

@@ -8,7 +8,7 @@
 </head>
 
 <body>
-
+<jsp:include page="inicio.jsp"/>
 	<div align="center">
 		<h1>Registro de Productos</h1>
 

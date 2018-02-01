@@ -12,6 +12,7 @@ import org.configuration.spring.web.model.Product;
 import org.configuration.spring.web.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -78,6 +79,15 @@ public class ProductoController {
 		return mav;
 	}
 	
+	
+	@RequestMapping("/updateProducto.htm")
+	public String updateProducto(@ModelAttribute("Product") Product p){		
+		
+		logger.info(p.toString());
+		productoService.updateProduct(p);
+	
+		return "redirect:/listaProducto.htm";
+	}
 
 	
 }
