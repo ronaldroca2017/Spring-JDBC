@@ -28,5 +28,39 @@
 		<property name="username" value="root" />
 		<property name="password" value="admin" />
 	</bean>
+	
+	
+		<!-- Configura un SessionFactory para Hibernate -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
+		<property name="dataSource">
+			<ref local ="dataSource" />
+		</property>
+		<property name="packagesToScan" value="org.configuration.spring.web.model" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="show_sql">true</prop>
+				<prop key="format_sql">true</prop>
+				<prop key="use_sql_comments">true</prop>
+			
+				
+			</props>
+		</property>
+	</bean>
+
+	<!-- Habilitar la configuración del comportamiento transaccional basado 
+		en anotaciones -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- El Administrador de transacciones está definido -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 </beans>

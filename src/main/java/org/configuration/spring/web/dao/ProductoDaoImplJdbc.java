@@ -13,6 +13,7 @@ import org.configuration.spring.web.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public class ProductoDaoImplJdbc  implements ProductoDao {
 	
@@ -55,26 +56,25 @@ public class ProductoDaoImplJdbc  implements ProductoDao {
 
 				  lstProd.add(product);			      
 	            }
-			  
-			rs.close();
-			ps.close();
+
 			return lstProd;
 			
 		} catch (SQLException e) {
 			logger.error("Error al recuperar los productos de la bd " + e.getMessage());
 			throw new RuntimeException(e);
 		} finally {	
-			cerrarConexion(ps,rs,conn);
+			try {
+				rs.close();
+				ps.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}	
 		
 	}
 	
-	private void cerrarConexion(PreparedStatement ps, ResultSet rs,Connection conn ) {
-		try{ if(ps!=null)ps.close(); } catch(Exception e){e.getMessage();}
-		try{ if(rs!=null)rs.close(); } catch(Exception e){e.getMessage();}
-		try{ if(conn!=null)conn.close(); } catch(Exception e){e.getMessage();}
-		
-	}
 
 	@Override
 	public void saveProduct(Product p) {
@@ -95,12 +95,9 @@ public class ProductoDaoImplJdbc  implements ProductoDao {
 	            ps.setBigDecimal(3, p.getPrice());
 	            ps.setString(4, p.getDescription());
 	            ps.setInt(5, p.getCategory().getId_Category());
-	            
+	           
 	            ps.executeUpdate();  
-	            
-	            ps.close();
-	            conn.close();
-	            
+	                        
 	        } catch (Exception e) {
 	        	logger.error("Error al Registrar el producto en la bd " + e.getMessage());
 				throw new RuntimeException(e);
@@ -111,8 +108,52 @@ public class ProductoDaoImplJdbc  implements ProductoDao {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-	        }
+	        }		
+	}
+
+	
+	@Override
+	public Product getProduct(int idProd) {
 		
+		Product prod = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+	        try {
+	            
+	            conn = dataSource.getConnection();
+	            String sql = "SELECT id_product, p.code, description, p.name, price , c.name AS nameCat "
+	            		+ " FROM product p INNER JOIN category c ON p.id_category = c.id_category WHERE  id_product = ?";
+	            ps = conn.prepareStatement(sql);
+	            ps.setInt(1, idProd);
+	            rs = ps.executeQuery();
+	            
+	            
+	            
+	            if(rs.next()){
+	            	prod = new Product();	
+	            	prod.setId_product(rs.getInt("id_product"));
+	            	prod.setCode(rs.getString("code"));
+	            	prod.setName(rs.getString("name"));
+	            	prod.setDescription(rs.getString("description"));
+	            	prod.setPrice(rs.getBigDecimal("price"));
+	            	prod.setCategory(new Category(rs.getString("nameCat")));
+	          
+	            
+	            }
+	        } catch (Exception e) {
+	        	logger.error("Error al obtener el producto en la bd " + e.getMessage());
+				throw new RuntimeException(e);
+	        }finally{
+	        	try {
+	        		rs.close();
+					ps.close();
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	        }
+	        return prod;
 	}
 
 

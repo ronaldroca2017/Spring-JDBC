@@ -12,7 +12,6 @@
 	<div align="center">
 		<table>
 			<tr>
-				<td>Id</td>
 				<td>Code</td>
 				<td>Producto</td>
 				<td>Descripción</td>
@@ -22,8 +21,7 @@
 
 			<c:forEach items="${lstProduct}" var="prod">
 				<tr>
-					<td>${prod.id_product}</td>
-					<td>${prod.code}</td>
+					<td><a href="loadProducto.htm?id=${prod.id_product}">${prod.code}</a></td>
 					<td>${prod.name}</td>
 					<td>${prod.description}</td>
 					<td>${prod.price}</td>				

@@ -18,14 +18,20 @@ import javax.persistence.Table;
 	@ManyToOne(fetch = FetchType.EAGER)//Traigo todos los productos y sus categorias
 	@JoinColumn(name = "id_category", nullable = false)
 */
+@Entity
+@Table
 public class Product {
 	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id_product;
 	private String name;
 	private String code;
 	private BigDecimal price;
 	private String description;
+	
+	@ManyToOne(fetch = FetchType.EAGER)//Traigo todos los productos y sus categorias
+	@JoinColumn(name = "id_category", nullable = false)
 	private Category category;
 	
 

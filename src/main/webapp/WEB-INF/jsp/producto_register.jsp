@@ -20,13 +20,13 @@
 					<td><input type="text" name="code"></td>
 				</tr>
 				<tr>
-					<td>descripción:</td>
-					<td><input type="text" name="descripcion"></td>
-				</tr>
-				<tr>
 					<td>name:</td>
 					<td><input type="text" name="name"></td>
 				</tr>
+				<tr>
+					<td>descripción:</td>
+					<td><input type="text" name="descripcion"></td>
+				</tr> 
 				<tr>
 					<td>precio:</td>
 					<td><input type="text" name="precio"></td>

@@ -13,6 +13,7 @@ import org.configuration.spring.web.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -66,5 +67,17 @@ public class ProductoController {
 
 		return "redirect:/listaProducto.htm";
 	}
+	
+	@RequestMapping("/loadProducto.htm")
+	public ModelAndView loadProducto(@RequestParam("id") Integer idProduct){		
+		
+		Product prod =  productoService.getProduct(idProduct);
+		ModelAndView mav = new ModelAndView();	
+		mav.addObject("product", prod);
+		mav.setViewName("producto_update");
+		return mav;
+	}
+	
+
 	
 }

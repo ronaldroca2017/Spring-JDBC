@@ -8,5 +8,6 @@ public interface ProductoDao {
 	
 	List<Product> findAllProducts();
 	void  saveProduct(Product p);
+	Product getProduct(int idProd);
 	
 }

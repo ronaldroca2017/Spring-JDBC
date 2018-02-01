@@ -34,4 +34,10 @@ public class ProductoServiceImpl implements ProductoService {
 	}
 
 
+	@Override
+	public Product getProduct(int idProd) {
+		return productoDao.getProduct(idProd);
+	}
+
+
 }

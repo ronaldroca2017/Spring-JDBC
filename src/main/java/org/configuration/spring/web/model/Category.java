@@ -17,8 +17,13 @@ import javax.persistence.Table;
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")//Solo traigo las categorias sin los productos
 */
+
+@Entity
+@Table
 public class Category {
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id_Category;
 	private String name;
 	
